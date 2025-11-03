@@ -1,0 +1,307 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<windows.h>
+
+// functions declaration
+void hospitalDetails(void);
+void patient_Details(void);
+void medi_Scan(int);
+int datesCompair(int);
+void buzzerOptions(void);
+
+
+
+
+
+
+// variables declaration
+
+//for hospital details
+struct hosipital_Details{
+	char hsptlId[10];
+	char hsptlName[50];
+}hsptlDetails;
+
+// for patient details
+struct patientDetails{
+	char p_Name[50];
+	char p_bedNum[10];
+	char p_disease[50];
+	char p_phno[11];
+	char p_attendiePhno[11];
+	char p_referalDoctorName[50];
+	char p_referalDoctorPhno[11];
+}patientDetails;
+
+// for medicin details
+struct medicinDetails{
+	char mediName[50];
+	char mediManu_Company[50];;
+	struct medicinDate{
+		int date;
+		int month;
+		int year;
+	}mediManu_Date, mediExp_Date;
+}mediDetails[100];
+
+//current date
+struct currentDate{
+		int date;
+		int month;
+		int year;
+	}present_Date;
+	
+
+struct Time{
+	int hr;
+	int min;
+}time[5];
+
+
+int  n_medi, day1, mon1, year1, day2, mon2, year2, day_diff, mon_diff, year_diff, buzzerType, tw = 0;
+
+// hospital details will be collected by this function
+
+void hospitalDetails(void){
+	printf("\nEnter the Hospital Details ");
+	printf("\nHospital ID : ");
+	scanf("%s",hsptlDetails.hsptlId);
+	printf("\nHospital Name : ");
+	scanf("%s",hsptlDetails.hsptlName);
+	system("cls");
+	printf("\nHospital Name : %s \t\t\t Hospital ID : %s\n", hsptlDetails.hsptlName, hsptlDetails.hsptlId);
+	
+}
+
+// Patient Details will be collected by his function & also referal doctor details
+
+void patient_Details(void){
+	printf("\nEnter Patient Details \nName : ");
+	scanf("%s",patientDetails.p_Name);
+	printf("\nBed No : ");
+	scanf("%s",patientDetails.p_bedNum);
+	printf("\nDisease : ");
+	scanf("%s",patientDetails.p_disease);
+	printf("\nPatient Phno: ");
+	scanf("%s",patientDetails.p_phno);
+	printf("\nPatient Attendie Phno: ");
+	scanf("%s",patientDetails.p_attendiePhno);
+	printf("\nRefaral Doctor Name: ");
+	scanf("%s",patientDetails.p_referalDoctorName);
+	printf("\nRefaral Doctor Phno: ");
+	scanf("%s",patientDetails.p_referalDoctorPhno);
+	system("cls");
+	printf("\nHospital Name : %s \t\t\t Hospital ID : %s", hsptlDetails.hsptlName, hsptlDetails.hsptlId);
+	printf("\n\nPatient Name : %s\nBed No : %s\nRefaral Doctor : %s ", patientDetails.p_Name, patientDetails.p_bedNum, patientDetails.p_referalDoctorName);
+	
+}
+
+
+// medicin details will be collected Details will be collected by his function & also referal doctor details
+void medi_Scan(int i){
+	printf("\n******************************__Medicins are Dropped__**************************************\n");
+	printf("\nthe information it should scan like : ");
+	printf("\nManifacture Company Name : ");
+	scanf("%s",mediDetails[i].mediManu_Company);
+	printf("\nTablet Name : ");
+	scanf("%s",mediDetails[i].mediName);
+	printf("\nManufacture Date(dd mm yyyy) : ");
+	scanf("%2d%2d%4d",&mediDetails[i].mediManu_Date.date, &mediDetails[i].mediManu_Date.month, &mediDetails[i].mediManu_Date.year);
+	printf("\nExpiry Date (dd mm yyyy) : ");
+	scanf("%2d%2d%4d", &mediDetails[i].mediExp_Date.date, &mediDetails[i].mediExp_Date.month, &mediDetails[i].mediExp_Date.year);
+	
+}
+void printMediDetails(int i){
+	Sleep(5000);
+	system("cls");
+	printf("\nHospital Name : %s \t\t\t Hospital ID : %s", hsptlDetails.hsptlName, hsptlDetails.hsptlId);
+	printf("\n\nPatient Name : %s\nBed No : %s\nRefaral Doctor : %s ", patientDetails.p_Name, patientDetails.p_bedNum, patientDetails.p_referalDoctorName);
+	
+	for(int x = 0; x < i; x++){
+			printf("\n\nMedicin Name : %s\t\tExpiry Date : %d-%d-%d", mediDetails[x].mediName, mediDetails[x].mediExp_Date.date, mediDetails[x].mediExp_Date.month, mediDetails[x].mediExp_Date.year);
+	
+	}
+}
+
+
+
+int datesCompair(int i){
+//	printf("\n\nscanning......\nEnter Todays Date : ");
+//	scanf("%2d%2d%4d", &present_Date.date, &present_Date.month, present_Date.year);
+
+
+	system("cls");
+	printf("\nHospital Name : %s \t\t\t Hospital ID : %s", hsptlDetails.hsptlName, hsptlDetails.hsptlId);
+	printf("\n\nPatient Name : %s\nBed No : %s\nRefaral Doctor : %s ", patientDetails.p_Name, patientDetails.p_bedNum, patientDetails.p_referalDoctorName);
+	printf("\n\nMedicin Name : %s\nExpiry Date : %d-%d-%d", mediDetails[i].mediName, mediDetails[i].mediExp_Date.date, mediDetails[i].mediExp_Date.month, mediDetails[i].mediExp_Date.year);
+	printf("\n\nToday Date : %d-%d-%d",present_Date.date, present_Date.month, present_Date.year);
+
+// Checking Dates and comparing todays date with expiry date 
+//Source : https://overiq.com/c-examples/c-program-to-calculate-the-difference-of-two-dates-in-years-months-and-days/#:~:text=How%20it%20works,of%20the%20end%20date%2C%20respectively.
+
+	day1 = present_Date.date;
+	mon1 = present_Date.month;
+	year1 = present_Date.year;
+	day2 = mediDetails[i].mediExp_Date.date;
+	mon2 = mediDetails[i].mediExp_Date.month;
+	year2 = mediDetails[i].mediExp_Date.year;
+	
+	 if(day2 < day1)
+    {      
+        // borrow days from february
+        if (mon2 == 3)
+        {
+            //  check whether year is a leap year
+            if ((year2 % 4 == 0 && year2 % 100 != 0) || (year2 % 400 == 0)) 
+            {
+                day2 += 29;
+            }
+
+            else
+            {
+                day2 += 28;
+            }                        
+        }
+
+        // borrow days from April or June or September or November
+        else if (mon2 == 5 || mon2 == 7 || mon2 == 10 || mon2 == 12) 
+        {
+           day2 += 30; 
+        }
+
+        // borrow days from Jan or Mar or May or July or Aug or Oct or Dec
+        else
+        {
+           day2 += 31;
+        }
+
+        mon2 = mon2 - 1;
+    }
+
+    if (mon2 < mon1)
+    {
+        mon2 += 12;
+        year2 -= 1;
+    }       
+
+    day_diff = day2 - day1;
+    mon_diff = mon2 - mon1;
+    year_diff = year2 - year1;
+
+    printf("\n\nDifference: %d years %02d months and %02d days.", year_diff, mon_diff, day_diff);
+	
+	
+	if(year_diff > 1)
+	{
+		printf("\n This medicins can be used for more than %d Years", year_diff);
+	}
+	else if(year_diff == 1)
+	{
+		printf("\n This medicin will be expired with in a year");
+	}
+	else if(year_diff < 1 || year_diff >= 0)
+	{
+		if(mon_diff > 2)
+		{
+			printf("\n This medicin is going to expire in %d months",mon_diff);
+		}
+		else if(mon_diff <= 3 && mon_diff > 0)
+		{
+			printf("\n !!! WARNNING :: THIS MEDICIN WILL EXPIRE WITH IN %d MONTHS\tBetter Not to use them........", mon_diff);
+		}
+		else if(mon_diff == 0)
+		{
+			if(day_diff >= 10)
+			{
+				printf("\n !!! WARNNING :: THIS MEDICIN WILL EXPIRE WITH IN %d DAYS\tBetter Not to use them........", day_diff);
+			}
+			else if(day_diff < 10 && day_diff > 0)
+			{
+				printf("\n !!! WARNNING :: THIS MEDICIN WILL EXPIRE WITH IN %d DAYS\tPLEASE don't use them........", day_diff);
+			}
+			else if(day_diff <= 0)
+			{
+				printf("\nALERT :: MEDICIN EXPIRED THE INFORMATION HAS BEEN SENT TO THE MAIN OFFICE AND CASE HAS BEEN FILED");
+				return 0;
+			}
+		}
+		else if(mon_diff < 0)
+		{
+			printf("\nALERT :: MEDICIN EXPIRED THE INFORMATION HAS BEEN SENT TO THE MAIN OFFICE AND CASE HAS BEEN FILED");
+			return 0;
+		}
+		
+	}
+	else if(year_diff < 0)
+	{
+		printf("\nALERT :: MEDICIN EXPIRED THE INFORMATION HAS BEEN SENT TO THE MAIN OFFICE AND CASE HAS BEEN FILED");
+		return 0;
+	}
+}
+
+//Selecting the buzzer options and setting alarm
+void buzzerOptions(void){
+//	system("cls");
+	opt: 
+	printf("\n******************************__Set your alarm__**************************************\n");
+	
+	printf("\n\n1.Time Wise\n2.Hour wise\n\nChoose the option to ring the buzzer :: ");
+	scanf("%d",&buzzerType);
+	switch(buzzerType)
+	{
+		case 1:
+			system("cls");
+			printf("\n**********************____TIME WISE____******************************\n");
+			printf("\nEnter the time to take the medicins (HH:MM)");
+			for( tw = 0; tw < 4; tw++)
+			{
+				if(tw == 0)
+				{
+					printf("\nMORNING : ");
+					scanf("%2d:%2d",&time[tw].hr, &time[tw].min);
+				}
+				else if(tw == 1)
+				{
+					printf("\n AFTERNOON : ");
+					scanf("%2d:%2d",&time[tw].hr, &time[tw].min);
+				}
+				else if(tw == 2)
+				{
+					printf("\n EVENING : ");
+					scanf("%2d:%2d",&time[tw].hr, &time[tw].min);
+				}
+				else if(tw == 3)
+				{
+					printf("\n NIGHT : ");
+					scanf("%2d:%2d",&time[tw].hr, &time[tw].min);
+				}
+		
+			}
+	
+			printf("\n\n\n ALARM SET for the following  TIME \n");
+	
+			for( tw = 0; tw < 4; tw++)
+			{
+				printf("\nMORNING time :  %d:%d AM", time[tw].hr, time[tw].min);
+				tw++;
+				printf("\nAFTERNOON time :  %d:%d PM", time[tw].hr, time[tw].min);
+				tw++;
+				printf("\nEVENING time :  %d:%d PM", time[tw].hr, time[tw].min);
+				tw++;
+				printf("\nNIGHT time :  %d:%d PM", time[tw].hr, time[tw].min);
+			}
+			
+			break;
+		case 2:
+			system("cls");
+			printf("\n**********************____HOUR WISE____******************************\n");
+			printf("\n \n Enter After how much time gap the alarm should ring (HH:MM): ");
+			scanf("%2d%2d", &time[4].hr, &time[4].min);
+			printf("\n Alarm Set for every %d : %d hrs.............................",time[4].hr, time[4].min);
+			break;
+		default:
+			printf("Please choose the correct option ");
+			goto opt;
+	}
+}
