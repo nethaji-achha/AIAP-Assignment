@@ -1,0 +1,8 @@
+{
+  "nethaji": {
+    "salt": "RBj3iE6ycW49p9rwOiPYKg==",
+    "iterations": 200000,
+    "hash": "BmQFCVML06RqKEZRiZNcbpkO2oh8Ryd09uY42Bvb4Vo=",
+    "algo": "pbkdf2_sha256"
+  }
+}

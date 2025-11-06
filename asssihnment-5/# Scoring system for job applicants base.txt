@@ -1,0 +1,52 @@
+# Scoring system for job applicants based on features
+
+class ApplicantScorer:
+    """
+    A simple scoring system for job applicants.
+    Features considered: education, years_experience, skills, certifications.
+    Each feature is expected to be present in the applicant's info (a dict).
+    """
+
+    def __init__(self, preferred_skills=None, preferred_certifications=None, min_experience=0):
+        self.preferred_skills = preferred_skills or []
+        self.preferred_certifications = preferred_certifications or []
+        self.min_experience = min_experience
+
+    def compute_score(self, applicant_info):
+        score = 0
+
+        # Education scoring
+        education = applicant_info.get('education', '').lower()
+        if 'phd' in education:
+            score += 30
+        elif 'master' in education:
+            score += 20
+        elif 'bachelor' in education:
+            score += 10
+
+        # Experience scoring
+        years_exp = applicant_info.get('years_experience', 0)
+        if years_exp >= self.min_experience:
+            score += min(years_exp * 2, 20)  # max 20 points for experience
+
+        # Skills scoring
+        skills = set([s.lower() for s in applicant_info.get('skills', [])])
+        skill_matches = skills.intersection([s.lower() for s in self.preferred_skills])
+        score += len(skill_matches) * 5  # 5 points per matched skill
+
+        # Certifications scoring
+        certs = set([c.lower() for c in applicant_info.get('certifications', [])])
+        cert_matches = certs.intersection([c.lower() for c in self.preferred_certifications])
+        score += len(cert_matches) * 3  # 3 points per matched certification
+
+        return score
+
+# Example usage:
+# scorer = ApplicantScorer(preferred_skills=['python', 'machine learning'], preferred_certifications=['PMP'], min_experience=2)
+# applicant = {
+#    'education': 'Master of Science',
+#    'years_experience': 4,
+#    'skills': ['Python', 'Data Analysis'],
+#    'certifications': ['PMP'],
+# }
+# print(scorer.compute_score(applicant))
